@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\dashboard\DashboardController;
+use App\Http\Controllers\monitoring\MonitoringController;
+use App\Http\Controllers\perangkat\PerangkatController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +17,10 @@ use Inertia\Inertia;
 */
 
 Route::get('/', function () {
-    return Inertia::render('welcome_page');
-})->name('welcome');
+    return redirect()->route("dashboard.index");
+});
 
-Route::get('/enjoy', function () {
-    return Inertia::render('enjoy_page');
-})->name('enjoy');
+Route::apiResource('dashboard',DashboardController::class);
+Route::apiResource('monitoring',MonitoringController::class);
+Route::apiResource('perangkat',PerangkatController::class);
+
