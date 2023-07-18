@@ -18,6 +18,9 @@
         "@inertiajs/vue3": "^1.0.8",
         "@vitejs/plugin-vue": "^4.2.3",
         "apexcharts": "^3.41.0",
+        "laravel-echo-vue3": "^1.0.1",
+        "pusher-js": "^8.2.0",
+        "vue-pusher": "^1.1.0",
         "vue3-apexcharts": "^1.4.4",
         "ziggy": "^2.4.0",
         "ziggy-js": "^1.6.0"

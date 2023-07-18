@@ -1,5 +1,6 @@
 <?php
 
+use App\Events\InfoPerangkatEvent;
 use App\Http\Controllers\dashboard\DashboardController;
 use App\Http\Controllers\monitoring\MonitoringController;
 use App\Http\Controllers\perangkat\PerangkatController;
@@ -24,3 +25,6 @@ Route::apiResource('dashboard',DashboardController::class);
 Route::apiResource('monitoring',MonitoringController::class);
 Route::apiResource('perangkat',PerangkatController::class);
 
+Route::get("test/{id}",function($id){
+    event(new InfoPerangkatEvent($id));
+});

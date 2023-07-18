@@ -19,9 +19,9 @@
                 </ul>
             </div>
         </div>
-        <div class="h-full bg-base-200 flex gap-4">
+        <div class="h-full bg-base-300 flex gap-4">
             <div class="h-full py-4 px-2">
-                <ul class="menu bg-base-100 w-56 rounded-box">
+                <ul class="menu bg-base-200 w-56 rounded-box">
                     <li>
                         <h2 class="menu-title">Dashboard</h2>
                         <ul>
@@ -37,7 +37,7 @@
                     </li>
                 </ul>
             </div>
-            <div class="card bg-base-100 my-4 w-full mr-4">
+            <div class="card bg-base-200 my-4 w-full mr-4">
                 <div class="card-body">
                     <slot></slot>
                 </div>
