@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\perangkat;
 
 use App\Http\Controllers\Controller;
+use App\Models\Perangkat;
 use Illuminate\Http\Request;
 
 class PerangkatController extends Controller
@@ -14,7 +15,11 @@ class PerangkatController extends Controller
      */
     public function index()
     {
-        return inertia()->render("data/perangkat/perangkat_page");
+        $perangkat = Perangkat::latest()->get();
+        $data = [
+            "perangkat" => $perangkat,
+        ];
+        return inertia()->render("data/perangkat/perangkat_page",$data);
     }
 
     /**
@@ -25,7 +30,14 @@ class PerangkatController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'perangkat' => "required|unique:perangkats,perangkat",
+        ]);
+
+        $perangkat = new Perangkat();
+        $perangkat->perangkat = $request->perangkat;
+        $perangkat->kondisi = $request->kondisi;
+        $perangkat->save();
     }
 
     /**
