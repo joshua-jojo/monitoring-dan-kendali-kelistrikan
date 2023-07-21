@@ -1,14 +1,14 @@
 <template lang="">
     <div class="flex flex-col gap-4">
-        <div class="card shadow-lg bg-base-100">
+        <div class="card shadow-lg bg-base-100" >
             <div class="card-body">
                 <div class="">test {{testData}}</div>
                 <div id="chart">
                     <apexchart
                         type="area"
                         height="200"
-                        :options="chartOptions"
-                        :series="series"
+                        :options="chart1.chartOptions"
+                        :series="chart1.series"
                     ></apexchart>
                 </div>
             </div>
@@ -22,7 +22,8 @@ export default {
     layout: Layout_page,
     data() {
         return {
-            series: [
+            chart1 : {
+                series: [
                 {
                     name: "series2",
                     data: [11, 32, 45, 32, 34, 52, 41],
@@ -56,6 +57,7 @@ export default {
                         format: "dd/MM/yy HH:mm",
                     },
                 },
+            },
             },
             testData : null
         };

@@ -26,5 +26,8 @@ Route::apiResource('monitoring',MonitoringController::class);
 Route::apiResource('perangkat',PerangkatController::class);
 
 Route::get("test/{id}",function($id){
-    event(new InfoPerangkatEvent($id));
+    for ($i=0; $i < 100; $i++) { 
+        event(new InfoPerangkatEvent(rand(1,20)));
+        sleep(0.5);
+    }
 });

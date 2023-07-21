@@ -9,6 +9,9 @@ import VueApexCharts from "vue3-apexcharts";
 import Pusher from 'pusher-js';
 import LaravelEcho from "laravel-echo-vue3"
 
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all.js'
+
 const apiKey = '9a85ac4209727bd69743'
 const cluster = 'ap1'
 
