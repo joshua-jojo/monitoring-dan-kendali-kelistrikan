@@ -190,7 +190,7 @@ export default {
         const form_edit = useForm({
             id: null,
             perangkat: "",
-            kondisi: "mati",
+            kondisi: "",
         });
 
         const form_hapus = useForm({
@@ -215,7 +215,7 @@ export default {
         data_edit(data){
             this.form_edit.id = data.id
             this.form_edit.perangkat = data.perangkat
-            this.form_edit.status = data.status
+            this.form_edit.kondisi = data.kondisi
         },
         submit_edit() {
             this.form_edit.put(route("perangkat.update",{id : this.form_edit.id}), {

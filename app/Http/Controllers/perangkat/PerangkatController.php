@@ -19,7 +19,7 @@ class PerangkatController extends Controller
         $data = [
             "perangkat" => $perangkat,
         ];
-        return inertia()->render("data/perangkat/perangkat_page",$data);
+        return inertia()->render("data/perangkat/perangkat_page", $data);
     }
 
     /**
@@ -60,7 +60,24 @@ class PerangkatController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            "id" => "required|exists:perangkats,id",
+            "perangkat" => "required"
+        ]);
+
+        $perangkat = Perangkat::find($request->id);
+
+        if ($request->perangkat != $perangkat->perangkat) {
+            $request->validate([
+                "perangkat"   => "unique:perangkats,perangkat"
+            ]);
+
+            $perangkat->perangkat = $request->perangkat;
+        }
+
+        $perangkat->kondisi = $request->kondisi;
+
+        $perangkat->save();
     }
 
     /**
