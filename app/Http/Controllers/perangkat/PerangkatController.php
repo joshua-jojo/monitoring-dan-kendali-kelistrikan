@@ -88,6 +88,7 @@ class PerangkatController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $perangkat = Perangkat::find($id);
+        $perangkat->delete();
     }
 }

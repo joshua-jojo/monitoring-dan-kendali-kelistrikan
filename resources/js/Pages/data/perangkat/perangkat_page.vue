@@ -173,6 +173,31 @@
             </div>
         </div>
     </div>
+
+    <!-- hapus  -->
+    <input type="checkbox" id="hapus" class="modal-toggle" />
+    <div class="modal">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Hapus Perangkat</h3>
+            <div class="py-4">
+                Hapus perangkat <b>{{form_hapus.perangkat}}</b>. Semua data terkait akan di hapus.
+            </div>
+            <div class="modal-action">
+                <button
+                    class="btn btn-error"
+                    @click="submit_hapus"
+                    :disabled="form_hapus.processing"
+                >
+                    <span
+                        class="loading loading-spinner loading-sm"
+                        v-if="form_hapus.processing"
+                    ></span>
+                    hapus
+                </button>
+                <label for="hapus" class="btn">Close</label>
+            </div>
+        </div>
+    </div>
 </template>
 <script>
 import { useForm } from "@inertiajs/vue3";
@@ -195,7 +220,6 @@ export default {
 
         const form_hapus = useForm({
             id: null,
-            perangkat: "",
         });
         return {
             form_tambah,
