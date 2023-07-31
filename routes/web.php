@@ -21,13 +21,13 @@ Route::get('/', function () {
     return redirect()->route("dashboard.index");
 });
 
-Route::apiResource('dashboard',DashboardController::class);
-Route::apiResource('monitoring',MonitoringController::class);
-Route::apiResource('perangkat',PerangkatController::class);
+Route::apiResource('dashboard', DashboardController::class);
+Route::apiResource('monitoring', MonitoringController::class);
+Route::apiResource('perangkat', PerangkatController::class);
 
-Route::get("test/{id}",function($id){
-    for ($i=0; $i < 100; $i++) { 
-        event(new InfoPerangkatEvent(rand(1,20)));
-        sleep(0.5);
+Route::get("test/{id}/{data}", function ($id, $data) {
+    for ($i = 0; $i < 50; $i++) {
+        event(new InfoPerangkatEvent(rand(2, 4), rand(1, 110), strtotime("now")));
+        usleep(1000000);
     }
 });

@@ -21,10 +21,12 @@ class InfoPerangkatEvent implements ShouldBroadcastNow
      * @return void
      */
 
-    public $data;
+    public $id,$data,$date;
 
-    public function __construct($data)
+    public function __construct($id,$data,$date)
     {
+        $this->id = $id;
+        $this->date = $date;
         $this->data = $data;
     }
 

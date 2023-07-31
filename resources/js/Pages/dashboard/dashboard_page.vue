@@ -1,15 +1,52 @@
 <template lang="">
-    <div class="flex flex-col gap-4">
-        <div class="card shadow-lg bg-base-100" >
+    <div class="grid grid-cols-2 gap-4">
+        <div
+            class="card shadow-2xl bg-base-100"
+            v-for="(item, index) in data_perangkat"
+            :key="index"
+        >
             <div class="card-body">
-                <div class="">test {{testData}}</div>
-                <div id="chart">
+                <div class="flex justify-between">
+                    <div class="text-lg capitalize font-bold">
+                        {{ item.perangkat }}
+                    </div>
+                    <div class="flex gap-2">
+                        <div class="">OFF</div>
+                        <input
+                            type="checkbox"
+                            class="toggle toggle-success"
+                            :checked="item.kondisi == 'hidup'"
+                        />
+                        <div class="">ON</div>
+                    </div>
+                </div>
+                <div :id="item.perangkat">
                     <apexchart
-                        type="area"
                         height="200"
-                        :options="chart1.chartOptions"
-                        :series="chart1.series"
+                        :options="item.chartOptions"
+                        :series="item.series"
                     ></apexchart>
+                </div>
+                <div class="w-full">
+                    <table class="">
+                        <tbody>
+                            <tr>
+                                <td>Daya Pakai </td>
+                                <td class="pl-4"> : {{ item.daya }} Watt</td>
+                            </tr>
+                            <tr>
+                                <td>Status Perangkat </td>
+                                <td class="pl-4"> : 
+                                    <span
+                                        class="badge badge-success"
+                                        v-if="item.kondisi == 'hidup'"
+                                        >HIDUP</span
+                                    >
+                                    <span class="badge badge-error">MATI</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -20,53 +57,37 @@ import Layout_page from "../../layout/layout_page.vue";
 
 export default {
     layout: Layout_page,
+    props: ["perangkat"],
     data() {
         return {
-            chart1 : {
-                series: [
-                {
-                    name: "series2",
-                    data: [11, 32, 45, 32, 34, 52, 41],
-                },
-            ],
-            chartOptions: {
-                chart: {
-                    height: 350,
-                    type: "area",
-                },
-                dataLabels: {
-                    enabled: false,
-                },
-                stroke: {
-                    curve: "smooth",
-                },
-                xaxis: {
-                    type: "datetime",
-                    categories: [
-                        "2018-09-19T00:00:00.000Z",
-                        "2018-09-19T01:30:00.000Z",
-                        "2018-09-19T02:30:00.000Z",
-                        "2018-09-19T03:30:00.000Z",
-                        "2018-09-19T04:30:00.000Z",
-                        "2018-09-19T05:30:00.000Z",
-                        "2018-09-19T06:30:00.000Z",
-                    ],
-                },
-                tooltip: {
-                    x: {
-                        format: "dd/MM/yy HH:mm",
-                    },
-                },
-            },
-            },
-            testData : null
+            data_perangkat: [...this.perangkat],
+            testData: null,
         };
     },
-    created(){
-        this.$echo.channel("bang-wahyu").listen('.info-perangkat', e => {
-           this.testData = e.data
-        })
-    }
+    created() {
+        this.$echo
+            .channel("bang-wahyu")
+            .listen(".info-perangkat", async (e) => {
+                const id = e.id;
+                const data_baru = [e.date, e.data];
+
+                const perangkat_aktif = await this.data_perangkat.findIndex(
+                    (perangkat, index) => perangkat.id == id
+                );
+                const data_lama =
+                    this.data_perangkat[perangkat_aktif].series[0].data;
+                this.data_perangkat[perangkat_aktif].series[0].data = [
+                    ...data_lama,
+                    data_baru,
+                ];
+                this.data_perangkat[perangkat_aktif].daya = e.data;
+            });
+    },
+    computed: {
+        loop_perangkat() {
+            return;
+        },
+    },
 };
 </script>
 <style lang=""></style>

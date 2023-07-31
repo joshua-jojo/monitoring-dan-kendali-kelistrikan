@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Perangkat;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -14,7 +15,47 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return inertia()->render("dashboard/dashboard_page");
+        $perangkat = Perangkat::all();
+        $perangkat->map(function ($q) {
+            $q->series = [
+                [
+                    "name" => $q->perangkat,
+                    "data" => [
+                        [strtotime("now"),0]
+                    ],
+                ]
+            ];
+
+            $q->chartOptions = [
+                "chart" => [
+                    "height" => 350,
+                    "type" => "area",
+                ],
+                "dataLabels" => [
+                    "enabled" => false,
+                ],
+                "stroke" => [
+                    "curve" => "smooth",
+                ],
+                "xaxis" => [
+                    "type" => "datetime",
+                    "tickAmount" => 6,
+                ],
+                "tooltip" => [
+                    "x" => [
+                        "format" => "dd/MM/yy HHmm",
+                    ],
+                ],
+            ];
+
+            $q->daya = 0;
+            return $q;
+        });
+
+        $data = [
+            'perangkat' => $perangkat
+        ];
+        return inertia()->render("dashboard/dashboard_page", $data);
     }
 
     /**
