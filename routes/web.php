@@ -4,6 +4,7 @@ use App\Events\InfoPerangkatEvent;
 use App\Http\Controllers\dashboard\DashboardController;
 use App\Http\Controllers\monitoring\MonitoringController;
 use App\Http\Controllers\perangkat\PerangkatController;
+use App\Models\Perangkat;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,8 +27,12 @@ Route::apiResource('monitoring', MonitoringController::class);
 Route::apiResource('perangkat', PerangkatController::class);
 
 Route::get("test/{id}/{data}", function ($id, $data) {
-    for ($i = 0; $i < 50; $i++) {
-        event(new InfoPerangkatEvent(rand(2, 4), rand(1, 110), strtotime("now")));
-        usleep(1000000);
-    }
+    event(new InfoPerangkatEvent($id, $data, strtotime("now")));
+    return response()->json("ok", 200);
+});
+
+Route::get("status-perangkat/{id}", function ($id) {
+    $perangkat = Perangkat::find($id);
+
+    return $perangkat->kondisi;
 });

@@ -49,11 +49,10 @@ class DashboardController extends Controller
             ];
 
             $q->daya = 0;
-            return $q;
+            return json_decode($q);
         });
-
         $data = [
-            'perangkat' => $perangkat
+            'list_perangkat' => $perangkat
         ];
         return inertia()->render("dashboard/dashboard_page", $data);
     }

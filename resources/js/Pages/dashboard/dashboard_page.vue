@@ -15,7 +15,9 @@
                         <input
                             type="checkbox"
                             class="toggle toggle-success"
-                            :checked="item.kondisi == 'hidup'"
+                            :checked="item.kondisi == 'hidup' || item.kondisi == true"
+                            v-model="item.kondisi"
+                            @change="status_perangkat(item)"
                         />
                         <div class="">ON</div>
                     </div>
@@ -31,18 +33,19 @@
                     <table class="">
                         <tbody>
                             <tr>
-                                <td>Daya Pakai </td>
-                                <td class="pl-4"> : {{ item.daya }} Watt</td>
+                                <td>Daya Pakai</td>
+                                <td class="pl-4">: {{ item.daya }} Watt</td>
                             </tr>
                             <tr>
-                                <td>Status Perangkat </td>
-                                <td class="pl-4"> : 
+                                <td>Status Perangkat</td>
+                                <td class="pl-4">
+                                    :
                                     <span
                                         class="badge badge-success"
-                                        v-if="item.kondisi == 'hidup'"
+                                        v-if="item.kondisi == 'hidup' || item.kondisi == true"
                                         >HIDUP</span
                                     >
-                                    <span class="badge badge-error">MATI</span>
+                                    <span class="badge badge-error" v-else>MATI</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -54,38 +57,45 @@
 </template>
 <script>
 import Layout_page from "../../layout/layout_page.vue";
+import { router } from "@inertiajs/vue3";
 
 export default {
     layout: Layout_page,
-    props: ["perangkat"],
+    props: ["list_perangkat"],
     data() {
         return {
-            data_perangkat: [...this.perangkat],
-            testData: null,
+            data_perangkat: this.list_perangkat.map(e => {
+                e.kondisi = e.kondisi == "hidup" ? true : false;
+                return e
+            }),
         };
     },
     created() {
-        this.$echo
-            .channel("bang-wahyu")
-            .listen(".info-perangkat", async (e) => {
-                const id = e.id;
-                const data_baru = [e.date, e.data];
+        this.$echo.channel("bang-wahyu").listen(".info-perangkat", (e) => {
+            const id = e.id;
+            const data_baru = [e.date, e.data];
 
-                const perangkat_aktif = await this.data_perangkat.findIndex(
-                    (perangkat, index) => perangkat.id == id
-                );
-                const data_lama =
-                    this.data_perangkat[perangkat_aktif].series[0].data;
-                this.data_perangkat[perangkat_aktif].series[0].data = [
-                    ...data_lama,
-                    data_baru,
-                ];
-                this.data_perangkat[perangkat_aktif].daya = e.data;
-            });
+            const perangkat_aktif = this.data_perangkat.findIndex(
+                (perangkat) => perangkat.id == id
+            );
+            const data_lama =
+                this.data_perangkat[perangkat_aktif].series[0].data;
+            this.data_perangkat[perangkat_aktif].series[0].data.push(data_baru);
+            this.data_perangkat[perangkat_aktif].daya = e.data;
+        });
     },
-    computed: {
-        loop_perangkat() {
-            return;
+    methods: {
+        status_perangkat(data) {
+            console.log(data);
+            const form = {...data}
+            const kondisi = form.kondisi == true ? "hidup" : "mati";
+            form.kondisi = kondisi
+            router.put(
+                route("perangkat.update", {
+                    id: form.id,
+                }),
+                form
+            );
         },
     },
 };
