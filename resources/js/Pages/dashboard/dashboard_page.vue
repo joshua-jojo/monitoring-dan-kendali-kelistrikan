@@ -15,7 +15,9 @@
                         <input
                             type="checkbox"
                             class="toggle toggle-success"
-                            :checked="item.kondisi == 'hidup' || item.kondisi == true"
+                            :checked="
+                                item.kondisi == 'hidup' || item.kondisi == true
+                            "
                             v-model="item.kondisi"
                             @change="status_perangkat(item)"
                         />
@@ -42,10 +44,15 @@
                                     :
                                     <span
                                         class="badge badge-success"
-                                        v-if="item.kondisi == 'hidup' || item.kondisi == true"
+                                        v-if="
+                                            item.kondisi == 'hidup' ||
+                                            item.kondisi == true
+                                        "
                                         >HIDUP</span
                                     >
-                                    <span class="badge badge-error" v-else>MATI</span>
+                                    <span class="badge badge-error" v-else
+                                        >MATI</span
+                                    >
                                 </td>
                             </tr>
                         </tbody>
@@ -64,9 +71,9 @@ export default {
     props: ["list_perangkat"],
     data() {
         return {
-            data_perangkat: this.list_perangkat.map(e => {
+            data_perangkat: this.list_perangkat.map((e) => {
                 e.kondisi = e.kondisi == "hidup" ? true : false;
-                return e
+                return e;
             }),
         };
     },
@@ -83,13 +90,19 @@ export default {
             this.data_perangkat[perangkat_aktif].series[0].data.push(data_baru);
             this.data_perangkat[perangkat_aktif].daya = e.data;
         });
+
+        this.$echo.channel("bang-wahyu").listen(".status-perangkat", (e) => {
+            const perangkat_aktif = this.data_perangkat.findIndex(
+                (perangkat) => perangkat.id == e.id
+            );
+            this.data_perangkat[perangkat_aktif].kondisi = e.kondisi;
+        });
     },
     methods: {
         status_perangkat(data) {
-            console.log(data);
-            const form = {...data}
+            const form = { ...data };
             const kondisi = form.kondisi == true ? "hidup" : "mati";
-            form.kondisi = kondisi
+            form.kondisi = kondisi;
             router.put(
                 route("perangkat.update", {
                     id: form.id,

@@ -33,6 +33,6 @@ Route::get("test/{id}/{data}", function ($id, $data) {
 
 Route::get("status-perangkat/{id}", function ($id) {
     $perangkat = Perangkat::find($id);
-
-    return $perangkat->kondisi;
+    $kondisi = $perangkat->kondisi;
+    return $kondisi;
 });

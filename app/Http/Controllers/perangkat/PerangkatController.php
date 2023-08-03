@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\perangkat;
 
+use App\Events\StatusPerangkatEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Perangkat;
 use Illuminate\Http\Request;
@@ -78,6 +79,8 @@ class PerangkatController extends Controller
         $perangkat->kondisi = $request->kondisi;
 
         $perangkat->save();
+
+        event(new StatusPerangkatEvent($id,$request->kondisi == "hidup" ? true : false));
     }
 
     /**
