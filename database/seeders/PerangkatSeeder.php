@@ -15,7 +15,7 @@ class PerangkatSeeder extends Seeder
      */
     public function run()
     {
-        for ($i=1; $i <= 2; $i++) { 
+        for ($i=1; $i <= 6; $i++) { 
             $perangkat = new Perangkat();
             $perangkat->perangkat = "Perangkat $i";
             $perangkat->kondisi = "mati";

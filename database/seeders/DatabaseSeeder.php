@@ -22,7 +22,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
-            StatistikSeeder::class,
+            // StatistikSeeder::class,
             PerangkatSeeder::class
         ]);
     }

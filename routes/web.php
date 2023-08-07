@@ -5,6 +5,8 @@ use App\Http\Controllers\dashboard\DashboardController;
 use App\Http\Controllers\monitoring\MonitoringController;
 use App\Http\Controllers\perangkat\PerangkatController;
 use App\Models\Perangkat;
+use App\Models\Statistik;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,11 +29,27 @@ Route::apiResource('monitoring', MonitoringController::class);
 Route::apiResource('perangkat', PerangkatController::class);
 
 Route::get("test/{id}/{data}", function ($id, $data) {
-    for ($i=0; $i < 15; $i++) { 
-        event(new InfoPerangkatEvent(1, rand(0,300), strtotime("now")));
-        sleep(1);
+    event(new InfoPerangkatEvent($id, $data, strtotime("now")));
+
+    $statistik_terakhir_perangkat = Statistik::where("tanggal", date("Y-m-d"))->latest()->first();
+
+    if(empty($statistik_terakhir_perangkat)){
+        $statistik = new Statistik();
+        $statistik->perangkat_id = $id;
+        $statistik->tanggal = date("Y-m-d");
+        $statistik->jam = date("H:i");
+        $statistik->tegangan = $data;
+        $statistik->save();
     }
-    // event(new InfoPerangkatEvent($id, $data, strtotime("now")));
+
+    if ($statistik_terakhir_perangkat && $statistik_terakhir_perangkat->created_at->lte(Carbon::now()->subHour())) {
+        $statistik = new Statistik();
+        $statistik->perangkat_id = $id;
+        $statistik->tanggal = date("Y-m-d");
+        $statistik->jam = date("H:i");
+        $statistik->tegangan = $data;
+        $statistik->save();
+    }
     return response()->json("ok", 200);
 });
 
