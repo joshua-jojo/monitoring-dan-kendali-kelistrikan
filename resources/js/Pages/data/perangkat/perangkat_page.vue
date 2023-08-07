@@ -14,6 +14,7 @@
                     <thead>
                         <tr>
                             <th></th>
+                            <th class="text-center">ID Perangkat</th>
                             <th>Nama Perangkat</th>
                             <th>Kondisi</th>
                             <th>Opsi</th>
@@ -22,7 +23,8 @@
                     <tbody>
                         <!-- row 1 -->
                         <tr v-for="(item, index) in perangkat" :key="index">
-                            <th>{{ index + 1 }}</th>
+                            <td>{{ index + 1 }}</td>
+                            <td class="text-center">{{ item.id }}</td>
                             <td class="capitalize">{{ item.perangkat }}</td>
                             <td class="font-semibold">
                                 <div
