@@ -94,7 +94,7 @@
 
         <div
             class="flex justify-center items-center"
-            v-if="statistik.data.length"
+            v-if="!(statistik.data.length < params.show)"
         >
             <div class="join">
                 <Link

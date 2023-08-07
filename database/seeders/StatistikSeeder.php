@@ -23,7 +23,6 @@ class StatistikSeeder extends Seeder
             $statistik->jam = date("H:i");
             $statistik->tegangan = rand(1, 250);
             $statistik->save();
-            sleep(1);
         }
     }
 }
