@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {},
+    fontFamily : {
+      hemi : "hemi"
+    }
   },
   plugins: [require('daisyui')],
   daisyui: {

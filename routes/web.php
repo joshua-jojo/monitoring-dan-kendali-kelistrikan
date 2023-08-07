@@ -27,7 +27,11 @@ Route::apiResource('monitoring', MonitoringController::class);
 Route::apiResource('perangkat', PerangkatController::class);
 
 Route::get("test/{id}/{data}", function ($id, $data) {
-    event(new InfoPerangkatEvent($id, $data, strtotime("now")));
+    for ($i=0; $i < 15; $i++) { 
+        event(new InfoPerangkatEvent(1, rand(0,300), strtotime("now")));
+        sleep(1);
+    }
+    // event(new InfoPerangkatEvent($id, $data, strtotime("now")));
     return response()->json("ok", 200);
 });
 

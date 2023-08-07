@@ -21,15 +21,28 @@ class DashboardController extends Controller
                 [
                     "name" => $q->perangkat,
                     "data" => [
-                        [strtotime("now"),0]
+                        [strtotime("now"), 0]
                     ],
                 ]
             ];
 
             $q->chartOptions = [
                 "chart" => [
-                    "height" => 350,
+                    "id" => "realtime",
                     "type" => "area",
+                    "animations" =>  [
+                        "enabled" => false,
+                        "easing" => "linear",
+                        "dynamicAnimation" => [
+                            "speed" => 600
+                        ]
+                    ],
+                    "toolbar" =>  [
+                        "show" =>  false
+                    ],
+                    "zoom" =>  [
+                        "enabled" =>  false
+                    ]
                 ],
                 "dataLabels" => [
                     "enabled" => false,
@@ -39,13 +52,17 @@ class DashboardController extends Controller
                 ],
                 "xaxis" => [
                     "type" => "datetime",
-                    "tickAmount" => 6,
+                    "tickAmount" => 3,
                 ],
                 "tooltip" => [
                     "x" => [
-                        "format" => "dd/MM/yy HHmm",
+                        "format" => "dd/MM/yy HH:mm",
                     ],
                 ],
+                "yaxis" => [
+                    "max" => 300,
+                    "tickAmount" => 4,
+                ]
             ];
 
             $q->daya = 0;

@@ -10,6 +10,16 @@
                     <div class="text-lg capitalize font-bold">
                         {{ item.perangkat }}
                     </div>
+                </div>
+                <div :id="item.perangkat" class="h-[150px] overflow-hidden">
+                    <apexchart
+                        height="100%"
+                        :options="item.chartOptions"
+                        :series="item.series"
+                        :ref="`chart${item.id}`"
+                    ></apexchart>
+                </div>
+                <div class="w-full flex justify-between items-center px-4">
                     <div class="flex gap-2">
                         <div class="">OFF</div>
                         <input
@@ -23,40 +33,7 @@
                         />
                         <div class="">ON</div>
                     </div>
-                </div>
-                <div :id="item.perangkat">
-                    <apexchart
-                        height="200"
-                        :options="item.chartOptions"
-                        :series="item.series"
-                    ></apexchart>
-                </div>
-                <div class="w-full">
-                    <table class="">
-                        <tbody>
-                            <tr>
-                                <td>Daya Pakai</td>
-                                <td class="pl-4">: {{ item.daya }} Watt</td>
-                            </tr>
-                            <tr>
-                                <td>Status Perangkat</td>
-                                <td class="pl-4">
-                                    :
-                                    <span
-                                        class="badge badge-success"
-                                        v-if="
-                                            item.kondisi == 'hidup' ||
-                                            item.kondisi == true
-                                        "
-                                        >HIDUP</span
-                                    >
-                                    <span class="badge badge-error" v-else
-                                        >MATI</span
-                                    >
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="font-hemi text-4xl">{{ item.daya }}V</div>
                 </div>
             </div>
         </div>
@@ -85,10 +62,25 @@ export default {
             const perangkat_aktif = this.data_perangkat.findIndex(
                 (perangkat) => perangkat.id == id
             );
-            const data_lama =
-                this.data_perangkat[perangkat_aktif].series[0].data;
-            this.data_perangkat[perangkat_aktif].series[0].data.push(data_baru);
+
             this.data_perangkat[perangkat_aktif].daya = e.data;
+
+            const id_perangkat = this.data_perangkat[perangkat_aktif].id;
+
+            const refs_perangkat = this.$refs[`chart${id_perangkat}`][0]
+
+            if(!refs_perangkat?.data_lama){
+                refs_perangkat.data_lama = [...refs_perangkat.series[0].data]
+            }
+
+            const data_lama = refs_perangkat.data_lama
+            if(data_lama.length >= 10){
+                data_lama.shift()
+            }
+            data_lama.push(data_baru)
+            refs_perangkat.updateSeries([{
+              data: data_lama
+            }])
         });
 
         this.$echo.channel("bang-wahyu").listen(".status-perangkat", (e) => {
