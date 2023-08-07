@@ -16,8 +16,9 @@ return new class extends Migration
         Schema::create('statistiks', function (Blueprint $table) {
             $table->id();
             $table->integer("perangkat_id");
-            $table->integer("pemakaian");
             $table->string("tanggal");
+            $table->string("jam");
+            $table->integer("tegangan");
             $table->timestamps();
         });
     }

@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Statistik extends Model
 {
     use HasFactory;
+
+    function perangkat() {
+        return $this->belongsTo(Perangkat::class);
+    }
 }
