@@ -31,7 +31,7 @@ Route::apiResource('perangkat', PerangkatController::class);
 Route::get("test/{id}/{data}", function ($id, $data) {
     event(new InfoPerangkatEvent($id, $data, strtotime("now")));
 
-    $statistik_terakhir_perangkat = Statistik::where("tanggal", date("Y-m-d"))->latest()->first();
+    $statistik_terakhir_perangkat = Statistik::where("tanggal", date("Y-m-d"))->where("id",$id)->latest()->first();
 
     if(empty($statistik_terakhir_perangkat)){
         $statistik = new Statistik();
