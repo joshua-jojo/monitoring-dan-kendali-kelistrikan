@@ -64,6 +64,7 @@
                     <th>Nama Perangkat</th>
                     <th>Tanggal</th>
                     <th>Jam</th>
+                    <th class="text-center">Status</th>
                     <th class="text-center">Tegangan</th>
                 </tr>
             </thead>
@@ -82,6 +83,15 @@
                     <td>{{ item?.perangkat?.perangkat }}</td>
                     <td>{{ item.tanggal }}</td>
                     <td>{{ item.jam }}</td>
+                    <td
+                        class="text-center uppercase"
+                        :class="{
+                            'text-success': item.status == 'hidup',
+                            'text-error': item.status == 'mati',
+                        }"
+                    >
+                        {{ item.status }}
+                    </td>
                     <td class="text-center">{{ item.tegangan }} V</td>
                 </tr>
                 <tr v-else>

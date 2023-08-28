@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string("tanggal");
             $table->string("jam");
             $table->integer("tegangan");
+            $table->string("status");
             $table->timestamps();
         });
     }

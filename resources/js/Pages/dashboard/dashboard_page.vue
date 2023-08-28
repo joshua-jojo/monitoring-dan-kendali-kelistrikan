@@ -1,7 +1,7 @@
 <template lang="">
     <div class="grid grid-cols-2 gap-4">
         <div
-            class="card shadow-2xl bg-base-100"
+            class="card shadow-lg bg-base-100"
             v-for="(item, index) in data_perangkat"
             :key="index"
         >

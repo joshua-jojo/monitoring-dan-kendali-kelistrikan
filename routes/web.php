@@ -29,27 +29,50 @@ Route::apiResource('monitoring', MonitoringController::class);
 Route::apiResource('perangkat', PerangkatController::class);
 
 Route::get("test/{id}/{data}", function ($id, $data) {
-    event(new InfoPerangkatEvent($id, $data, strtotime("now")));
 
-    $statistik_terakhir_perangkat = Statistik::where("tanggal", date("Y-m-d"))->where("id",$id)->latest()->first();
+    $statistik_terakhir_perangkat = Statistik::where("tanggal", date("Y-m-d"))->where("perangkat_id", $id)->latest()->first();
+    $perangkat = Perangkat::find($id);
 
-    if(empty($statistik_terakhir_perangkat)){
-        $statistik = new Statistik();
-        $statistik->perangkat_id = $id;
-        $statistik->tanggal = date("Y-m-d");
-        $statistik->jam = date("H:i");
-        $statistik->tegangan = $data;
-        $statistik->save();
+    if ($perangkat->kondisi == "hidup") {
+        if (empty($statistik_terakhir_perangkat)) {
+            $statistik = new Statistik();
+            $statistik->perangkat_id = $id;
+            $statistik->tanggal = date("Y-m-d");
+            $statistik->jam = date("H:i");
+            $statistik->tegangan = $data;
+            $statistik->status = "hidup";
+            $statistik->save();
+        } else if (!empty($statistik_terakhir_perangkat) && $statistik_terakhir_perangkat->created_at->lte(Carbon::now()->subHour())) {
+            $statistik = new Statistik();
+            $statistik->perangkat_id = $id;
+            $statistik->tanggal = date("Y-m-d");
+            $statistik->jam = date("H:i");
+            $statistik->tegangan = $data;
+            $statistik->status = "hidup";
+            $statistik->save();
+        } else if ($statistik_terakhir_perangkat->status == "mati") {
+            $statistik = new Statistik();
+            $statistik->perangkat_id = $id;
+            $statistik->tanggal = date("Y-m-d");
+            $statistik->jam = date("H:i");
+            $statistik->tegangan = $data;
+            $statistik->status = "hidup";
+            $statistik->save();
+        }
+        event(new InfoPerangkatEvent($id, $data, strtotime("now")));
+    } else {
+        if (!empty($statistik_terakhir_perangkat) && $statistik_terakhir_perangkat->status == "hidup") {
+            $statistik = new Statistik();
+            $statistik->perangkat_id = $id;
+            $statistik->tanggal = date("Y-m-d");
+            $statistik->jam = date("H:i");
+            $statistik->tegangan = $data;
+            $statistik->status = "mati";
+            $statistik->save();
+        }
+        event(new InfoPerangkatEvent($id, 0, strtotime("now")));
     }
 
-    if ($statistik_terakhir_perangkat && $statistik_terakhir_perangkat->created_at->lte(Carbon::now()->subHour())) {
-        $statistik = new Statistik();
-        $statistik->perangkat_id = $id;
-        $statistik->tanggal = date("Y-m-d");
-        $statistik->jam = date("H:i");
-        $statistik->tegangan = $data;
-        $statistik->save();
-    }
     return response()->json("ok", 200);
 });
 

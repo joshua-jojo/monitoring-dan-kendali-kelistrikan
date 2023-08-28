@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-theme="night" class="bg-base-100">
+<html data-theme="light" id="tema" class="bg-base-100">
 
 <head>
     <meta charset="utf-8" />
