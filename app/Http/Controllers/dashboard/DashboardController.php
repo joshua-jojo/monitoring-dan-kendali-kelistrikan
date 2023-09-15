@@ -29,7 +29,7 @@ class DashboardController extends Controller
             $q->chartOptions = [
                 "chart" => [
                     "id" => "realtime",
-                    "type" => "area",
+                    "type" => "line",
                     "animations" =>  [
                         "enabled" => false,
                         "easing" => "linear",
@@ -51,17 +51,24 @@ class DashboardController extends Controller
                     "curve" => "smooth",
                 ],
                 "xaxis" => [
+                    "title" => [
+                        "text" =>  "Waktu"
+                    ],
                     "type" => "datetime",
                     "tickAmount" => 3,
                 ],
                 "tooltip" => [
                     "x" => [
-                        "format" => "dd/MM/yy HH:mm",
+                        "format" => "HH:mm",
                     ],
                 ],
                 "yaxis" => [
                     "max" => 300,
+                    "min" => 0,
                     "tickAmount" => 4,
+                    "title" => [
+                        "text" =>  "Voltase"
+                    ],
                 ]
             ];
 

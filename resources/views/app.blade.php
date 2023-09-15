@@ -10,7 +10,7 @@
     @routes
 </head>
 
-<body>
+<body class="overflow-hidden">
     @inertia
 </body>
 

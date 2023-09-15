@@ -8,9 +8,11 @@ import route from 'ziggy-js';
 import VueApexCharts from "vue3-apexcharts";
 import Pusher from 'pusher-js';
 import LaravelEcho from "laravel-echo-vue3"
+import AOS from 'aos'
 
 import '@fortawesome/fontawesome-free/css/all.css'
 import '@fortawesome/fontawesome-free/js/all.js'
+import 'aos/dist/aos.css'
 
 const apiKey = '9a85ac4209727bd69743'
 const cluster = 'ap1'
@@ -21,6 +23,8 @@ const options = {
     cluster: cluster,
     forceTLS: true
 }
+
+AOS.init();
 
 createInertiaApp({
     resolve: name => {
