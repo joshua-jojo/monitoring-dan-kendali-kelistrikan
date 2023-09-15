@@ -9,7 +9,13 @@ class Statistik extends Model
 {
     use HasFactory;
 
-    function perangkat() {
+    function perangkat()
+    {
         return $this->belongsTo(Perangkat::class);
+    }
+
+    function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

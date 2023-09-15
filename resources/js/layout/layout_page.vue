@@ -3,7 +3,7 @@
         <div class="navbar bg-base-100 h-max shadow-black">
             <div class="flex-1 justify-between p-2">
                 <div class="h-[35px]">
-                    <img src="../assets/pelindo.png" class="h-full">
+                    <img src="../assets/pelindo.png" class="h-full" />
                 </div>
                 <div class="">
                     <label class="swap swap-rotate">
@@ -78,6 +78,24 @@
                             </li>
                         </ul>
                     </li>
+                    <li>
+                        <h2 class="menu-title">Settings</h2>
+                        <ul>
+                            <li @click="UserPage" v-if="otorisasi">
+                                <a
+                                    :class="{
+                                        active:
+                                            $page.component ==
+                                            'settings/UserPage',
+                                    }"
+                                    >Manajemen User</a
+                                >
+                            </li>
+                            <li @click="logout">
+                                <a>Logout</a>
+                            </li>
+                        </ul>
+                    </li>
                 </ul>
             </div>
             <div class="py-4 w-full pr-4 pb-[90px] h-full overflow-hidden">
@@ -94,6 +112,10 @@
 import { router } from "@inertiajs/vue3";
 
 export default {
+    props: {
+        auth_status: Boolean,
+        auth_user: Object,
+    },
     setup() {
         const tema = localStorage.getItem("tema");
         const tag_tema = document.getElementById("tema");
@@ -122,6 +144,12 @@ export default {
             tag_tema.setAttribute("data-theme", tema);
             localStorage.setItem("tema", tema);
         },
+        logout() {
+            router.post(route("logout"));
+        },
+        UserPage() {
+            router.get(route("settings.user.index"));
+        },
     },
     watch: {
         tema(baru) {
@@ -132,5 +160,10 @@ export default {
             }
         },
     },
+    computed : {
+        otorisasi() {
+            return (this.auth_user.role == "admin");
+        },
+    }
 };
 </script>

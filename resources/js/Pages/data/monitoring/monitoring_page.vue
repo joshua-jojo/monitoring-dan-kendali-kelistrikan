@@ -66,6 +66,7 @@
                     <th>Jam</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Tegangan</th>
+                    <th class="text-center">User</th>
                 </tr>
             </thead>
             <tbody>
@@ -93,6 +94,12 @@
                         {{ item.status }}
                     </td>
                     <td class="text-center">{{ item.tegangan }} V</td>
+                    <td
+                        class="text-center"
+                        :class="{ 'line-through': set_nama(item).hapus }"
+                    >
+                        {{ set_nama(item).nama }}
+                    </td>
                 </tr>
                 <tr v-else>
                     <td class="text-center font-bold" colspan="99">
@@ -147,6 +154,13 @@ export default {
             router.get(route("monitoring.index"), this.filter_data, {
                 preserveState: true,
             });
+        },
+        set_nama(data) {
+            const nama = data?.user?.nama;
+            return {
+                nama: nama ? nama : "User telah dihapus",
+                hapus: nama == null,
+            };
         },
     },
     watch: {

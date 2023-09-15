@@ -25,7 +25,7 @@ class MonitoringController extends Controller
             'waktu_mulai' => empty($request->waktu_mulai) ? date("Y-m-d") : $request->waktu_mulai,
             'waktu_selesai' => empty($request->waktu_selesai) ? date("Y-m-d") : $request->waktu_selesai,
         ];
-        $statistik = Statistik::with(['perangkat']);
+        $statistik = Statistik::with(['perangkat','user']);
         $statistik = $statistik->where(function ($q) use ($params) {
             $q->whereBetween("tanggal",[$params['waktu_mulai'],$params['waktu_selesai']]);
             $q->whereHas("perangkat", function ($data_perangkat) use ($params) {

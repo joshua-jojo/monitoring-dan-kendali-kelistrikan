@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string("jam");
             $table->integer("tegangan");
             $table->string("status");
+            $table->string("user_id")->nullable();
             $table->timestamps();
         });
     }
